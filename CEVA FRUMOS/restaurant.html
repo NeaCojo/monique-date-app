@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        background: linear-gradient(180deg, #fff7f2 0%, #ffe5d6 35%, #ffd7db 100%);
+        min-height: 100vh;
+        padding: 32px 20px 48px;
+        overflow-x: hidden;
+      }
+
+      .heart-field {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .heart {
+        position: absolute;
+        top: -20%;
+        font-size: 1.1rem;
+        color: rgba(255, 119, 180, 0.85);
+        text-shadow: 0 0 12px rgba(255, 154, 206, 0.75);
+        animation: floatHeart linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes floatHeart {
+        0% {
+          transform: translate3d(0, 0, 0) scale(0.6) rotate(0deg);
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.9;
+        }
+        100% {
+          transform: translate3d(var(--drift), 120vh, 0) scale(1.3) rotate(18deg);
+          opacity: 0;
+        }
+      }
+
+      .page-shell {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 1100px);
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 5rem);
+        line-height: 1.1;
+        color: #ff4ea6;
+      }
+
+      .subtitle {
+        margin: 10px auto 30px;
+        max-width: 700px;
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
+        font-weight: 800;
+        color: #7a355d;
+      }
+
+      .restaurant-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        gap: 22px;
+        margin: 0 auto 24px;
+      }
+
+      .restaurant-card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        background: rgba(255,255,255,0.56);
+        border: 2px solid rgba(255,255,255,0.85);
+        border-radius: 24px;
+        padding: 14px 14px 16px;
+        box-shadow: 0 16px 30px rgba(255, 118, 177, 0.12);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .restaurant-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 38px rgba(255, 118, 177, 0.18);
+      }
+
+      .restaurant-image-btn {
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .restaurant-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 18px;
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      .restaurant-name {
+        display: block;
+        color: #ff4d9f;
+        font-size: 1.05rem;
+        font-weight: 900;
+        letter-spacing: 0.03em;
+        text-align: center;
+      }
+
+      .restaurant-actions {
+        margin-top: 8px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .restaurant-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ffd8ed 0%, #ffbedf 100%);
+        color: #7b335f;
+        font-size: 0.8rem;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .restaurant-card.no-link {
+        pointer-events: none;
+      }
+
+      .restaurant-card.no-link .restaurant-link {
+        background: rgba(255,255,255,0.3);
+        color: #8b506d;
+        text-decoration: none;
+        pointer-events: none;
+      }
+
+      .cta-block {
+        margin-top: 22px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .scary-btn,
+      .ig-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 18px;
+        font-weight: 900;
+        cursor: pointer;
+        text-decoration: none;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .scary-btn {
+        padding: 16px 26px;
+        background: linear-gradient(135deg, #ff7fc4 0%, #ff4fa1 40%, #ff8ec1 100%);
+        color: #fff;
+        box-shadow: 0 16px 26px rgba(255, 116, 183, 0.28);
+      }
+
+      .ig-btn {
+        padding: 16px 28px;
+        background: linear-gradient(135deg, #ffd4e8 0%, #ffc4e9 35%, #ffc7e6 100%);
+        color: #7a355d;
+        box-shadow: 0 16px 26px rgba(255, 144, 198, 0.22);
+      }
+
+      .scary-btn:hover,
+      .ig-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 760px) {
+        .restaurant-grid {
+          grid-template-columns: repeat(2, minmax(160px, 1fr));
+        }
+      }
+
+      @media (max-width: 520px) {
+        .restaurant-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="heart-field" aria-hidden="true"></div>
+
+    <main class="page-shell">
+      <h1>Restaurant</h1>
+      <div class="subtitle">here comes the 6-7 joke.</div>
+
+      <div class="restaurant-grid">
+        <div class="restaurant-card">
+          <button class="restaurant-image-btn" type="button" data-restaurant="ZAAF" data-page="restaurant-detail.html" aria-label="Choose ZAAF">
+            <img src="ZAAF.jpg" alt="ZAAF" />
+          </button>
+          <span class="restaurant-name">ZAAF</span>
+          <div class="restaurant-actions">
+            <a class="restaurant-link" href="https://www.zaaf.ro/" target="_blank" rel="noreferrer">Visit restaurant</a>
+          </div>
+        </div>
+
+        <div class="restaurant-card">
+          <button class="restaurant-image-btn" type="button" data-restaurant="UANDERFUL" data-page="restaurant-detail.html" aria-label="Choose UANDERFUL">
+            <img src="UANDERFUL.jpg" alt="UANDERFUL" />
+          </button>
+          <span class="restaurant-name">UANDERFUL</span>
+          <div class="restaurant-actions">
+            <a class="restaurant-link" href="https://uanderful.ro/the-story/" target="_blank" rel="noreferrer">Visit restaurant</a>
+          </div>
+        </div>
+
+        <div class="restaurant-card">
+          <button class="restaurant-image-btn" type="button" data-restaurant="Sera Eden" data-page="restaurant-detail.html" aria-label="Choose Sera Eden">
+            <img src="Sera Eden.jpg" alt="Sera Eden" />
+          </button>
+          <span class="restaurant-name">Sera Eden</span>
+          <div class="restaurant-actions">
+            <span class="restaurant-link">Aici nu am gasit link</span>
+          </div>
+        </div>
+
+        <div class="restaurant-card">
+          <button class="restaurant-image-btn" type="button" data-restaurant="Caju" data-page="restaurant-detail.html" aria-label="Choose Caju">
+            <img src="Caju.jpg" alt="Caju" />
+          </button>
+          <span class="restaurant-name">Caju</span>
+          <div class="restaurant-actions">
+            <a class="restaurant-link" href="https://cajubyjosephhadad.ro/" target="_blank" rel="noreferrer">Visit restaurant</a>
+          </div>
+        </div>
+
+        <div class="restaurant-card">
+          <button class="restaurant-image-btn" type="button" data-restaurant="MACE" data-page="restaurant-detail.html" aria-label="Choose MACE">
+            <img src="MACE.jpg" alt="MACE" />
+          </button>
+          <span class="restaurant-name">MACE</span>
+          <div class="restaurant-actions">
+            <a class="restaurant-link" href="https://macebyjosephhadad.ro/" target="_blank" rel="noreferrer">Visit restaurant</a>
+          </div>
+        </div>
+
+        <div class="restaurant-card">
+          <button class="restaurant-image-btn" type="button" data-restaurant="Le Bistrot Francais" data-page="restaurant-detail.html" aria-label="Choose Le Bistrot Francais">
+            <img src="Le Bistrot Francais.jpg" alt="Le Bistrot Francais" />
+          </button>
+          <span class="restaurant-name">Le Bistrot Francais</span>
+          <div class="restaurant-actions">
+            <a class="restaurant-link" href="https://www.lebistrotfrancais.ro/" target="_blank" rel="noreferrer">Visit restaurant</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-block">
+        <button class="scary-btn" type="button" data-page="restaurant-7th.html">7th Option you know, cause is after 6 hahah</button>
+        <a class="ig-btn" href="https://www.instagram.com/moniquerhenattaa/" target="_blank" rel="noreferrer">This what I am eating on the date.</a>
+      </div>
+    </main>
+
+    <script>
+      const heartField = document.querySelector('.heart-field');
+      const imageButtons = document.querySelectorAll('.restaurant-image-btn');
+      const scaryBtn = document.querySelector('.scary-btn');
+
+      imageButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const restaurant = button.dataset.restaurant || 'Selected restaurant';
+          localStorage.setItem('selectedRestaurant', restaurant);
+          window.location.href = button.dataset.page || 'restaurant-detail.html';
+        });
+      });
+
+      if (scaryBtn) {
+        scaryBtn.addEventListener('click', () => {
+          window.location.href = scaryBtn.dataset.page || 'restaurant-7th.html';
+        });
+      }
+
+      function createHeart() {
+        if (!heartField) return;
+        const heart = document.createElement('span');
+        const symbols = ['❤', '♥', '♡'];
+        heart.className = 'heart';
+        heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDuration = `${8 + Math.random() * 7}s`;
+        heart.style.fontSize = `${0.9 + Math.random() * 1.8}rem`;
+        heart.style.setProperty('--drift', `${(Math.random() - 0.5) * 180}px`);
+        heartField.appendChild(heart);
+        setTimeout(() => heart.remove(), 16000);
+      }
+
+      for (let i = 0; i < 24; i += 1) {
+        setTimeout(createHeart, i * 220);
+      }
+
+      setInterval(createHeart, 500);
+    </script>
+  </body>
+</html>

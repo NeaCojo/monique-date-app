@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personality</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        background: linear-gradient(180deg, #fffaf4 0%, #fce9f3 34%, #f7d7f0 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        padding: 32px 0 40px;
+      }
+
+      .heart-field {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .heart {
+        position: absolute;
+        top: -20%;
+        font-size: 1.1rem;
+        color: rgba(214, 132, 220, 0.8);
+        text-shadow: 0 0 12px rgba(214, 132, 220, 0.75);
+        animation: floatHeart linear forwards;
+        opacity: 0;
+      }
+
+      .spark-pop {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 1.8rem;
+        color: rgba(177, 94, 218, 0.9);
+        text-shadow: 0 0 12px rgba(196, 143, 255, 0.75);
+        animation: sparkFloat 2.2s ease-out forwards;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @keyframes floatHeart {
+        0% {
+          transform: translate3d(0, 0, 0) scale(0.6) rotate(0deg);
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.9;
+        }
+        100% {
+          transform: translate3d(var(--drift), 110vh, 0) scale(1.3) rotate(18deg);
+          opacity: 0;
+        }
+      }
+
+      @keyframes sparkFloat {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, 0) scale(0.8) rotate(0deg);
+        }
+        15% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(
+            calc(-50% + var(--spark-x, 0px)),
+            calc(-20px + var(--spark-y, -30px))
+          ) scale(1.35) rotate(12deg);
+        }
+      }
+
+      .compliment-card {
+        position: relative;
+        z-index: 1;
+        width: min(92vw, 820px);
+        margin: 0 auto;
+        padding: 32px 24px 28px;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.46);
+        border: 2px solid rgba(255,255,255,0.75);
+        box-shadow: 0 18px 36px rgba(209, 128, 197, 0.18);
+        text-align: center;
+      }
+
+      .compliment-card h1 {
+        margin: 0 0 18px;
+        font-size: clamp(2.2rem, 4vw, 4rem);
+        line-height: 1.1;
+        color: #b85dc8;
+      }
+
+      .compliment-card p {
+        margin: 0 auto;
+        max-width: 700px;
+        font-size: clamp(1.08rem, 2vw, 1.5rem);
+        line-height: 1.7;
+        color: #593f5b;
+      }
+
+      .back-btn {
+        display: inline-block;
+        margin-top: 26px;
+        border: none;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #eaa6ee 0%, #cb79dd 42%, #b56ad8 100%);
+        color: white;
+        padding: 14px 22px;
+        font-size: 1rem;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 14px 24px rgba(182, 106, 216, 0.28);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="heart-field" aria-hidden="true"></div>
+
+    <main class="compliment-card">
+      <h1>Personality</h1>
+      <p>
+        Is it crazy that I get a little jealous when the whole chat is obsessing over how pretty you are? But at the same time,
+        I’m glad they see what I see. I love that they aren't just stuck on your looks, but are actually seeing past that into
+        your soul. It only makes sense that someone as perfectly beautiful as you are on the outside has a personality to match.
+      </p>
+
+      <button class="back-btn" type="button">Back to compliments</button>
+    </main>
+
+    <script>
+      const heartField = document.querySelector('.heart-field');
+      const backBtn = document.querySelector('.back-btn');
+
+      backBtn.addEventListener('click', () => {
+        window.location.href = 'compliments-page.html';
+      });
+
+      function createHeart() {
+        if (!heartField) return;
+        const heart = document.createElement('span');
+        const symbols = ['❤', '♥', '♡'];
+        heart.className = 'heart';
+        heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDuration = `${8 + Math.random() * 7}s`;
+        heart.style.fontSize = `${0.9 + Math.random() * 1.8}rem`;
+        heart.style.setProperty('--drift', `${(Math.random() - 0.5) * 180}px`);
+        heartField.appendChild(heart);
+        setTimeout(() => heart.remove(), 15000);
+      }
+
+      function createSparkPop() {
+        const spark = document.createElement('span');
+        const emojis = ['✨', '💫', '🌟', '💖'];
+        spark.className = 'spark-pop';
+        spark.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        spark.style.left = `${20 + Math.random() * 60}%`;
+        spark.style.top = `${18 + Math.random() * 60}%`;
+        spark.style.setProperty('--spark-x', `${(Math.random() - 0.5) * 150}px`);
+        spark.style.setProperty('--spark-y', `${(Math.random() - 0.5) * 120}px`);
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 2200);
+      }
+
+      for (let i = 0; i < 18; i += 1) {
+        setTimeout(createHeart, i * 260);
+      }
+
+      for (let i = 0; i < 9; i += 1) {
+        setTimeout(createSparkPop, i * 500);
+      }
+
+      setInterval(createHeart, 500);
+      setInterval(createSparkPop, 1800);
+    </script>
+  </body>
+</html>
